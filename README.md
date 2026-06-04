@@ -1,1 +1,1365 @@
-# WAY
+# WAY<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>가족돌봄청년 연계 프로그램</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@300;400;600&family=Gaegu:wght@400;700&family=Black+Han+Sans&family=Gowun+Dodum&family=Jua&family=Poor+Story&family=Sunflower:wght@300;500;700&family=Cute+Font&family=Dokdo&family=East+Sea+Dokdo&family=Nanum+Pen+Script&family=Nanum+Gothic:wght@400;700&family=Nanum+Myeongjo:wght@400;700&family=Hi+Melody&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#FFD84D;--accent:#1A1A1A;
+  --bg:#FAF9F6;--bg2:#F2F0EB;--bg3:#E8E5DE;
+  --text1:#1A1A1A;--text2:#6B6760;--text3:#A8A49D;--white:#FFFFFF;
+  --r-xl:20px;--r-lg:14px;--r-md:10px;--r-sm:6px;
+  --shadow:0 2px 12px rgba(0,0,0,.07);
+  --font-body:'Noto Sans KR',sans-serif;
+  --font-display:'Noto Sans KR',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text1);min-height:100vh}
+#page-public{display:block}
+#page-admin{display:none}
+
+/* 헤더 */
+.site-header{background:var(--primary);padding:2rem 1rem 2.75rem;position:relative;overflow:hidden}
+.site-header .hdr-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:0}
+.site-header .hdr-bg-overlay{position:absolute;inset:0;z-index:1;pointer-events:none}
+.site-header::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.18);pointer-events:none;z-index:2}
+.site-header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:28px;background:var(--bg);border-radius:28px 28px 0 0;pointer-events:none;z-index:3}
+.hdr-inner{position:relative;z-index:4;max-width:560px;margin:0 auto}
+.hdr-badge{display:inline-flex;font-size:11px;font-weight:500;letter-spacing:.05em;background:rgba(0,0,0,.1);color:rgba(0,0,0,.65);padding:4px 12px;border-radius:20px;margin-bottom:.875rem}
+.hdr-title{font-family:var(--font-display);font-size:clamp(24px,7vw,36px);font-weight:700;line-height:1.25;color:var(--accent);margin-bottom:.5rem}
+.hdr-sub{font-size:13px;color:rgba(0,0,0,.55);line-height:1.65}
+
+/* 관리 버튼 */
+#btn-manage{position:fixed;top:16px;right:16px;z-index:9999;background:rgba(26,26,26,.8);backdrop-filter:blur(8px);border:none;border-radius:20px;padding:8px 16px;font-size:13px;font-weight:500;color:#fff;font-family:'Noto Sans KR',sans-serif;cursor:pointer;display:flex;align-items:center;gap:6px}
+#btn-manage:hover{background:rgba(26,26,26,.95)}
+
+/* 달력 */
+.pub-body{max-width:560px;margin:0 auto;padding:1rem .5rem 5rem}
+.cal-card{background:var(--white);border-radius:var(--r-xl);box-shadow:var(--shadow);overflow:hidden;margin-bottom:1.25rem;border:1px solid var(--bg3)}
+.cal-nav-bar{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1rem;border-bottom:1px solid var(--bg2)}
+.cal-month-lbl{font-size:15px;font-weight:500;font-family:var(--font-display)}
+.cal-nav-btns{display:flex;gap:6px}
+.nav-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--bg3);background:var(--bg);cursor:pointer;font-size:16px;color:var(--text2);display:flex;align-items:center;justify-content:center}
+.nav-btn:hover{background:var(--bg3)}
+.legend-bar{display:flex;flex-wrap:wrap;gap:5px;padding:.625rem 1rem;border-bottom:1px solid var(--bg2);background:var(--bg)}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);font-weight:400}
+.leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+/* 센터 필터 탭 */
+.filter-tabs-wrap{overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--bg2);background:var(--bg)}
+.filter-tabs-wrap::-webkit-scrollbar{display:none}
+.filter-tabs{display:flex;gap:0;padding:.5rem .875rem;width:max-content;min-width:100%}
+.filter-tab{font-size:12px;font-family:var(--font-body);padding:6px 14px;border-radius:20px;border:1.5px solid transparent;background:transparent;color:var(--text3);cursor:pointer;white-space:nowrap;transition:all .15s;font-weight:400;display:flex;align-items:center;gap:5px}
+.filter-tab:hover{color:var(--text2);background:var(--bg2)}
+.filter-tab.active{color:#fff;border-color:transparent;font-weight:500}
+.filter-tab .ftab-dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.85}
+.cal-grid-wrap{padding:.5rem .5rem .75rem}
+.dow-row{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:4px}
+.dow-cell{text-align:center;font-size:11px;color:var(--text3);padding:4px 0;font-weight:500}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.day-cell{height:80px;border-radius:var(--r-sm);padding:4px 3px 3px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.day-cell.in-month{background:var(--bg)}
+.day-cell.other-month{opacity:.35}
+.day-cell.today .dn{background:var(--primary);border-radius:50%}
+.day-num-wrap{height:20px;display:flex;align-items:center;margin-bottom:1px}
+.dn{font-size:11px;color:var(--text2);width:20px;height:20px;display:flex;align-items:center;justify-content:center}
+.day-cell.sun .dn{color:#D85A30}.day-cell.sat .dn{color:#378ADD}
+.prog-chip{font-size:10px;padding:3px 5px;border-radius:4px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.45;border:none;text-align:left;width:100%;font-family:var(--font-body);font-weight:500}
+.prog-chip:hover{opacity:.75}
+.more-lbl{font-size:9.5px;color:var(--text3);padding:1px 3px}
+.empty-state{grid-column:1/-1;text-align:center;padding:2.5rem 1rem;color:var(--text3);font-size:13px;line-height:1.8}
+
+/* 바텀 시트 */
+.sheet-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:flex-end;justify-content:center}
+.sheet-ov.open{display:flex}
+.bsheet{background:var(--white);border-radius:24px 24px 0 0;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;animation:slideUp .28s cubic-bezier(.32,0,.15,1);position:relative;padding-bottom:env(safe-area-inset-bottom,16px)}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sh-handle{width:36px;height:4px;background:var(--bg3);border-radius:2px;margin:12px auto 0}
+.sh-close{position:absolute;top:14px;right:14px;background:var(--bg2);border:none;border-radius:50%;width:30px;height:30px;font-size:18px;cursor:pointer;color:var(--text2);display:flex;align-items:center;justify-content:center}
+.sh-head{padding:1rem 1.25rem .75rem;border-bottom:1px solid var(--bg2)}
+.sh-center-badge{font-size:11px;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:6px}
+.sh-title{font-size:17px;font-weight:500;line-height:1.3;font-family:var(--font-display)}
+.sh-body{padding:.875rem 1.25rem}
+.info-row{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--bg2);align-items:flex-start}
+.info-row:last-of-type{border-bottom:none}
+.info-icon{font-size:14px;width:18px;flex-shrink:0;margin-top:1px;text-align:center}
+.info-label{font-size:11px;color:var(--text3);min-width:56px;flex-shrink:0;margin-top:2px}
+.info-val{font-size:13px;color:var(--text1);line-height:1.65}
+.status-pill{font-size:11px;padding:2px 9px;border-radius:20px;display:inline-block}
+.type-badge{font-size:10px;padding:2px 7px;border-radius:10px;display:inline-block;margin-left:6px}
+.img-swiper{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 1.25rem 8px;margin:8px -1.25rem 0}
+.img-swiper::-webkit-scrollbar{display:none}
+.img-slide{flex-shrink:0;width:calc(100% - 2.5rem);scroll-snap-align:start;border-radius:var(--r-lg);overflow:hidden;background:var(--bg2);aspect-ratio:4/3}
+.img-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.img-dots{display:flex;justify-content:center;gap:5px;margin-top:6px}
+.img-dot{width:6px;height:6px;border-radius:50%;background:var(--bg3)}
+.img-dot.active{background:var(--accent)}
+.apply-btn-sh{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:1rem;padding:13px;border-radius:var(--r-lg);font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;border:none;font-family:var(--font-body);background:var(--primary);color:var(--accent)}
+.apply-btn-sh:hover{opacity:.85}
+.closed-btn-sh{width:100%;margin-top:1rem;padding:13px;border-radius:var(--r-lg);font-size:14px;text-align:center;background:var(--bg2);color:var(--text3);border:1px solid var(--bg3)}
+.sh-edit-row{display:flex;justify-content:flex-end;padding:.75rem 1.25rem 0}
+.sh-edit-btn{font-size:12px;color:var(--text3);background:none;border:1px solid var(--bg3);border-radius:20px;padding:5px 12px;cursor:pointer;font-family:var(--font-body)}
+
+/* 관리자 */
+.admin-wrap{display:flex;height:100vh;overflow:hidden;background:#E8E5DE}
+.admin-panel{width:420px;flex-shrink:0;background:var(--white);border-right:1px solid var(--bg3);display:flex;flex-direction:column;overflow:hidden}
+.ap-head{padding:1rem 1.25rem;border-bottom:1px solid var(--bg2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ap-head h2{font-size:15px;font-weight:500}
+.ap-back{font-size:12px;color:var(--text3);background:none;border:1px solid var(--bg3);border-radius:20px;padding:5px 12px;cursor:pointer;font-family:var(--font-body)}
+.ap-back:hover{background:var(--bg2)}
+.ap-tabs{display:flex;border-bottom:1px solid var(--bg2);flex-shrink:0}
+.ap-tab{flex:1;padding:.75rem .25rem;text-align:center;font-size:12px;color:var(--text3);border:none;background:none;cursor:pointer;font-family:var(--font-body);border-bottom:2px solid transparent;margin-bottom:-1px}
+.ap-tab.on{color:var(--text1);border-bottom-color:var(--accent);font-weight:500}
+.ap-body{flex:1;overflow-y:auto;padding:1.25rem}
+.fg{margin-bottom:.875rem}
+.fg label{display:block;font-size:12px;color:var(--text2);margin-bottom:4px;font-weight:500}
+.fg input,.fg select,.fg textarea{width:100%;font-size:13px;padding:9px 12px;border:1.5px solid var(--bg3);border-radius:var(--r-md);background:var(--bg);color:var(--text1);font-family:var(--font-body)}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--accent);background:var(--white)}
+.fg textarea{resize:vertical;min-height:64px}
+.hint{font-size:11px;color:var(--text3);margin-top:3px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-btns{display:flex;gap:8px;margin-top:1.25rem}
+.btn-p{flex:1;padding:11px;background:var(--accent);color:#fff;border:none;border-radius:var(--r-md);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-body)}
+.btn-p:hover{opacity:.85}
+.btn-g{padding:11px 18px;background:var(--bg);color:var(--text2);border:1.5px solid var(--bg3);border-radius:var(--r-md);font-size:13px;cursor:pointer;font-family:var(--font-body)}
+.btn-g:hover{background:var(--bg2)}
+
+/* 센터 관리 */
+.ct-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--bg3);border-radius:var(--r-md);margin-bottom:6px;background:var(--white);overflow:hidden}
+.ct-color-swatch{width:22px;height:22px;border-radius:50%;flex-shrink:0;cursor:pointer;border:2px solid rgba(0,0,0,.08);position:relative;overflow:hidden}
+.ct-color-swatch input[type=color]{position:absolute;inset:0;width:200%;height:200%;opacity:0;cursor:pointer;border:none;padding:0;margin:-25%}
+.ct-name{flex:1;font-size:13px;color:var(--text1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.ct-del{background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;line-height:1;padding:2px 6px;display:flex;align-items:center;flex-shrink:0}
+.ct-del:hover{color:#A32D2D}
+.ct-add-row{display:flex;gap:8px;margin-top:10px;align-items:center}
+.ct-add-color-wrap{width:36px;height:36px;border-radius:8px;border:1.5px solid var(--bg3);cursor:pointer;flex-shrink:0;position:relative;overflow:hidden}
+.ct-add-color-wrap input[type=color]{position:absolute;inset:0;width:200%;height:200%;opacity:0;cursor:pointer;border:none;padding:0;margin:-25%}
+.ct-add-color-preview{width:100%;height:100%;border-radius:6px;pointer-events:none}
+.ct-add-input{flex:1;font-size:13px;padding:8px 12px;border:1.5px solid var(--bg3);border-radius:var(--r-md);background:var(--bg);color:var(--text1);font-family:var(--font-body)}
+.ct-add-input:focus{outline:none;border-color:var(--accent)}
+.ct-add-btn{padding:8px 14px;background:var(--accent);color:#fff;border:none;border-radius:var(--r-md);font-size:12px;cursor:pointer;font-family:var(--font-body);white-space:nowrap;flex-shrink:0}
+
+/* 이미지 */
+.img-up-area{border:2px dashed var(--bg3);border-radius:var(--r-md);padding:1rem;text-align:center;cursor:pointer;background:var(--bg)}
+.img-up-area:hover{border-color:var(--accent)}
+.img-prev-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+.img-thumb{position:relative;aspect-ratio:1;border-radius:var(--r-sm);overflow:hidden;background:var(--bg2)}
+.img-thumb img{width:100%;height:100%;object-fit:cover}
+.img-del{position:absolute;top:3px;right:3px;width:18px;height:18px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* 목록 */
+.pli{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--bg3);border-radius:var(--r-md);margin-bottom:6px;background:var(--white)}
+.pli-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.pli-info{flex:1;min-width:0}
+.pli-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pli-meta{font-size:11px;color:var(--text3);margin-top:2px}
+.pli-btns{display:flex;gap:4px;flex-shrink:0}
+.pli-btn{font-size:11px;padding:4px 10px;border-radius:20px;cursor:pointer;font-family:var(--font-body);border:1px solid var(--bg3);background:var(--bg);color:var(--text2)}
+.pli-btn:hover{background:var(--bg2)}
+.pli-btn.del{border-color:#F7C1C1;background:#FCEBEB;color:#A32D2D}
+.pli-btn.del:hover{background:#F7C1C1}
+
+/* 디자인 */
+.dsec{margin-bottom:1.5rem}
+.dsec-title{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--bg2)}
+.hue-slider{-webkit-appearance:none;appearance:none;width:100%;height:20px;border-radius:10px;background:linear-gradient(to right,#ff0000,#ff9900,#ffff00,#00ff00,#00ffff,#0066ff,#cc00ff,#ff0066,#ff0000);cursor:pointer;margin-bottom:8px}
+.hue-slider::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid rgba(0,0,0,.25);box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:pointer}
+.lit-slider{-webkit-appearance:none;appearance:none;width:100%;height:20px;border-radius:10px;cursor:pointer;margin-bottom:8px}
+.lit-slider::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid rgba(0,0,0,.25);box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:pointer}
+.color-result{display:flex;align-items:center;gap:10px;margin-top:4px}
+.color-box{width:44px;height:44px;border-radius:var(--r-md);border:1.5px solid var(--bg3);flex-shrink:0}
+.color-hex{flex:1;font-size:13px;padding:8px 12px;border:1.5px solid var(--bg3);border-radius:var(--r-md);background:var(--bg);color:var(--text1);font-family:var(--font-body)}
+.apply-color-btn{padding:8px 14px;background:var(--accent);color:#fff;border:none;border-radius:var(--r-md);font-size:12px;cursor:pointer;font-family:var(--font-body);white-space:nowrap}
+.font-opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.font-opt{padding:10px 12px;border:1.5px solid var(--bg3);border-radius:var(--r-md);cursor:pointer;background:var(--bg)}
+.font-opt:hover{border-color:var(--text2)}
+.font-opt.on{border-color:var(--accent);background:var(--accent);color:#fff}
+.font-opt .fo-lbl{font-size:12px;font-weight:500}
+.font-opt .fo-sample{font-size:15px;margin-top:3px}
+.bg-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.bg-opt{padding:8px;border:1.5px solid var(--bg3);border-radius:var(--r-md);cursor:pointer;text-align:center;font-size:11px;color:var(--text2)}
+.bg-opt:hover{border-color:var(--text2)}
+.bg-opt.on{border-color:var(--accent);font-weight:500;color:var(--text1)}
+.bg-swatch{width:100%;height:26px;border-radius:5px;margin-bottom:4px;border:1px solid rgba(0,0,0,.06)}
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:.75rem 0}
+.tog-sw{position:relative;width:44px;height:26px;flex-shrink:0}
+.tog-sw input{opacity:0;width:0;height:0;position:absolute}
+.tog-sw .sl{position:absolute;inset:0;background:var(--bg3);border-radius:13px;cursor:pointer;transition:background .2s}
+.tog-sw .sl::before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s}
+.tog-sw input:checked+.sl{background:var(--accent)}
+.tog-sw input:checked+.sl::before{transform:translateX(18px)}
+
+/* 미리보기 */
+.preview-wrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:1.5rem 1rem;overflow-y:auto;gap:10px}
+.prev-lbl{font-size:11px;font-weight:500;color:#888;letter-spacing:.05em}
+.phone-frame{width:260px;background:#111;border-radius:36px;padding:10px;box-shadow:0 8px 32px rgba(0,0,0,.3);flex-shrink:0}
+.phone-notch{width:72px;height:14px;background:#111;border-radius:0 0 10px 10px;margin:0 auto 4px}
+.phone-screen{border-radius:26px;overflow:hidden;background:var(--bg)}
+.pv-hdr{background:var(--primary);padding:1.1rem 1rem 1.6rem;position:relative;overflow:hidden}
+.pv-hdr::before{content:'';position:absolute;top:-25px;right:-25px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.18)}
+.pv-hdr::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:12px;background:var(--bg);border-radius:12px 12px 0 0;pointer-events:none}
+.pv-badge{display:inline-block;font-size:7.5px;background:rgba(0,0,0,.1);color:rgba(0,0,0,.6);padding:2px 7px;border-radius:10px;margin-bottom:4px}
+.pv-title{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--accent);line-height:1.25;margin-bottom:2px}
+.pv-sub{font-size:8.5px;color:rgba(0,0,0,.5);line-height:1.5}
+.pv-body{padding:.6rem .6rem .8rem;background:var(--bg)}
+.pv-cal{background:#fff;border-radius:10px;border:1px solid var(--bg3);overflow:hidden}
+.pv-nav{display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;border-bottom:1px solid var(--bg2);font-size:9px;font-weight:500;font-family:var(--font-display)}
+.pv-legend{display:flex;flex-wrap:wrap;gap:4px;padding:.3rem .5rem;border-bottom:1px solid var(--bg2);background:var(--bg)}
+.pv-leg-item{display:flex;align-items:center;gap:3px;font-size:6px;color:var(--text2)}
+.pv-leg-dot{width:6px;height:6px;border-radius:50%}
+.pv-dow{display:grid;grid-template-columns:repeat(7,1fr);padding:.3rem .4rem 0}
+.pv-dow span{text-align:center;font-size:6.5px;color:var(--text3);padding:2px 0}
+.pv-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;padding:.2rem .4rem .4rem}
+.pv-day{min-height:32px;border-radius:3px;background:var(--bg);padding:2px;display:flex;flex-direction:column;gap:1px}
+.pv-dn{font-size:6.5px;color:var(--text3);width:10px;height:10px;display:flex;align-items:center;justify-content:center}
+.pv-chip{border-radius:2px;width:100%;padding:1px 2px;font-size:5.5px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;font-weight:500}
+.pv-today .pv-dn{background:var(--primary);border-radius:50%;color:#000}
+
+/* 커스텀 드롭다운 */
+.cdd-wrap{position:relative;user-select:none}
+.cdd-trigger{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;font-size:13px;padding:9px 12px;border:1.5px solid var(--bg3);border-radius:var(--r-md);background:var(--bg);color:var(--text1);cursor:pointer;transition:border-color .15s}
+.cdd-trigger:hover{border-color:var(--text2)}
+.cdd-trigger.open{border-color:var(--accent)}
+.cdd-trigger-label{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cdd-trigger-sample{font-size:16px;flex-shrink:0;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cdd-trigger-swatch{width:28px;height:20px;border-radius:4px;flex-shrink:0;border:1px solid rgba(0,0,0,.08)}
+.cdd-arrow{font-size:10px;color:var(--text3);flex-shrink:0;transition:transform .2s}
+.cdd-trigger.open .cdd-arrow{transform:rotate(180deg)}
+.cdd-list{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--white);border:1.5px solid var(--bg3);border-radius:var(--r-md);box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:500;max-height:280px;overflow-y:auto;display:none}
+.cdd-list.open{display:block}
+.cdd-item{display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;transition:background .1s;border-bottom:1px solid var(--bg2)}
+.cdd-item:last-child{border-bottom:none}
+.cdd-item:hover{background:var(--bg2)}
+.cdd-item.selected{background:var(--bg);position:relative}
+.cdd-item.selected::after{content:'✓';position:absolute;right:12px;color:var(--accent);font-size:12px;font-weight:500}
+.cdd-item-sample-font{font-size:16px;flex-shrink:0;width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text1)}
+.cdd-item-label{font-size:12px;color:var(--text2);flex:1;min-width:0}
+.cdd-item-swatch-row{display:flex;gap:3px;flex-shrink:0}
+.cdd-item-swatch{width:20px;height:20px;border-radius:3px;border:1px solid rgba(0,0,0,.06)}
+
+
+/* 비밀번호 모달 */
+#pw-modal-wrap{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:10000;align-items:center;justify-content:center;padding:1rem}
+#pw-modal-wrap.open{display:flex}
+#pw-modal{background:var(--white);border-radius:var(--r-xl);width:100%;max-width:340px;padding:2rem 1.75rem;text-align:center}
+#pw-modal h3{font-size:16px;font-weight:500;margin-bottom:.5rem;color:var(--text1)}
+#pw-modal p{font-size:13px;color:var(--text3);margin-bottom:1.25rem;line-height:1.6}
+#pw-input{width:100%;font-size:15px;padding:11px 14px;border:1.5px solid var(--bg3);border-radius:var(--r-md);background:var(--bg);color:var(--text1);font-family:var(--font-body);text-align:center;letter-spacing:.15em;margin-bottom:.75rem}
+#pw-input:focus{outline:none;border-color:var(--accent)}
+#pw-input.error{border-color:#E24B4A;animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+#pw-error{font-size:12px;color:#E24B4A;margin-bottom:.75rem;min-height:16px}
+.pw-btns{display:flex;gap:8px}
+#pw-confirm{flex:1;padding:11px;background:var(--accent);color:#fff;border:none;border-radius:var(--r-md);font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-body)}
+#pw-confirm:hover{opacity:.85}
+#pw-cancel{padding:11px 16px;background:var(--bg);color:var(--text2);border:1.5px solid var(--bg3);border-radius:var(--r-md);font-size:14px;cursor:pointer;font-family:var(--font-body)}
+#pw-cancel:hover{background:var(--bg2)}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:10px 22px;border-radius:20px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9999;white-space:nowrap}
+.toast.show{opacity:1}
+</style>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAg84jH87qHxG571bOMU70grxf9vj2P3Bg",
+  authDomain: "youngcarer-8d19c.firebaseapp.com",
+  databaseURL: "https://youngcarer-8d19c-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "youngcarer-8d19c",
+  storageBucket: "youngcarer-8d19c.firebasestorage.app",
+  messagingSenderId: "103338723757",
+  appId: "1:103338723757:web:ef22bc07b95928ea017924"
+};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// Firebase에 저장
+window.fbSave = function(key, data){
+  set(ref(db, 'way/'+key), data);
+};
+// Firebase에서 실시간 감지
+window.fbListen = function(key, callback){
+  onValue(ref(db, 'way/'+key), (snap)=>{
+    callback(snap.val());
+  });
+};
+// 앱 초기화 시작 (Firebase 로드 완료 후)
+window.fbReady = true;
+window.dispatchEvent(new Event('fbReady'));
+</script>
+</head>
+<body>
+
+<!-- 공개 페이지 -->
+<div id="page-public">
+  <header class="site-header" id="siteHeader">
+    <img id="siteHdrBgImg" class="hdr-bg-img" src="" alt="" style="display:none">
+    <div id="siteHdrOverlay" class="hdr-bg-overlay"></div>
+    <div class="hdr-inner">
+      <div class="hdr-badge" id="hdrBadge">서울 청년센터 6개소 × 가족돌봄청년지원팀</div>
+      <div class="hdr-title" id="hdrTitle">가족돌봄청년<br>연계 프로그램</div>
+      <div class="hdr-sub" id="hdrSub">모집일정과 프로그램 일시를<br>달력에서 한눈에 확인하세요</div>
+    </div>
+  </header>
+  <div class="pub-body">
+    <div class="cal-card">
+      <div class="cal-nav-bar">
+        <div class="cal-month-lbl" id="monthLbl"></div>
+        <div class="cal-nav-btns">
+          <button class="nav-btn" id="prevMonthBtn">&#8249;</button>
+          <button class="nav-btn" id="nextMonthBtn">&#8250;</button>
+        </div>
+      </div>
+      <div class="filter-tabs-wrap">
+        <div class="filter-tabs" id="filterTabs"></div>
+      </div>
+      <div class="cal-grid-wrap">
+        <div class="dow-row">
+          <div class="dow-cell">일</div><div class="dow-cell">월</div><div class="dow-cell">화</div>
+          <div class="dow-cell">수</div><div class="dow-cell">목</div><div class="dow-cell">금</div><div class="dow-cell">토</div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 관리 버튼 -->
+<button id="btn-manage">⚙ 관리</button>
+
+<!-- 비밀번호 모달 -->
+<div id="pw-modal-wrap">
+  <div id="pw-modal">
+    <div style="font-size:28px;margin-bottom:.75rem">🔒</div>
+    <h3>관리자 로그인</h3>
+    <p>관리자 비밀번호를 입력해주세요</p>
+    <input type="password" id="pw-input" placeholder="••••••••" maxlength="20">
+    <div id="pw-error"></div>
+    <div class="pw-btns">
+      <button id="pw-cancel">취소</button>
+      <button id="pw-confirm">확인</button>
+    </div>
+  </div>
+</div>
+
+<!-- 바텀 시트 -->
+<div class="sheet-ov" id="sheetOv">
+  <div class="bsheet">
+    <div class="sh-handle"></div>
+    <button class="sh-close" id="sheetClose">×</button>
+    <div id="sheetContent"></div>
+  </div>
+</div>
+
+<!-- 관리자 페이지 -->
+<div id="page-admin">
+  <div class="admin-wrap">
+    <div class="admin-panel">
+      <div class="ap-head">
+        <h2 id="apTitle">관리자 페이지</h2>
+        <button class="ap-back" id="btn-back">← 공개 페이지로</button>
+      </div>
+      <div class="ap-tabs">
+        <button class="ap-tab on" data-tab="form">프로그램 추가</button>
+        <button class="ap-tab" data-tab="centers">센터 관리</button>
+        <button class="ap-tab" data-tab="list">목록</button>
+        <button class="ap-tab" data-tab="design">디자인</button>
+      </div>
+      <div class="ap-body">
+
+        <!-- 폼 탭 -->
+        <div id="tab-form">
+          <input type="hidden" id="editId">
+          <div class="two-col">
+            <div class="fg"><label>청년센터 *</label><select id="f-center"></select></div>
+            <div class="fg"><label>모집 상태</label>
+              <select id="f-status">
+                <option value="모집중">모집중</option>
+                <option value="모집예정">모집예정</option>
+                <option value="마감">마감</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg"><label>프로그램명 *</label><input id="f-title" placeholder="예: 자립 역량 워크숍"></div>
+          <div class="fg">
+            <label>프로그램 유형</label>
+            <select id="f-progtype">
+              <option value="">선택 안함</option>
+              <option value="체험·활동형">체험·활동형</option>
+              <option value="상담·치유형">상담·치유형</option>
+              <option value="정보·교육형">정보·교육형</option>
+              <option value="생활지원형">생활지원형</option>
+            </select>
+          </div>
+          <div class="two-col">
+            <div class="fg"><label>모집 시작일 *</label><input type="date" id="f-rstart"></div>
+            <div class="fg"><label>모집 마감일 *</label><input type="date" id="f-rend"></div>
+          </div>
+          <div class="fg">
+            <label>프로그램 유형</label>
+            <div style="display:flex;gap:12px;margin-top:4px">
+              <label style="display:flex;align-items:center;gap:5px;font-size:13px;cursor:pointer;font-weight:400"><input type="radio" name="ptype" value="연속" style="width:auto"> 연속</label>
+              <label style="display:flex;align-items:center;gap:5px;font-size:13px;cursor:pointer;font-weight:400"><input type="radio" name="ptype" value="일회성" checked style="width:auto"> 일회성</label>
+            </div>
+          </div>
+          <div class="fg"><label>프로그램 실시일</label><input id="f-dates" placeholder="2026-06-17, 2026-06-24"><div class="hint">쉼표로 구분 · YYYY-MM-DD · 달력에는 실시일 기준으로 표시됩니다</div></div>
+          <div class="two-col">
+            <div class="fg"><label>프로그램 일시</label><input id="f-schedule" placeholder="매주 화요일 14:00"></div>
+            <div class="fg"><label>장소</label><input id="f-location" placeholder="서대문 청년센터 2층"></div>
+          </div>
+          <div class="fg"><label>모집 인원</label><input id="f-capacity" placeholder="10명"></div>
+          <div class="fg"><label>프로그램 소개</label><textarea id="f-desc" placeholder="프로그램을 간단히 소개해주세요"></textarea></div>
+          <div class="fg"><label>신청 링크</label><input id="f-link" placeholder="https://..."><div class="hint">입력하면 '신청하기' 버튼으로 표시됩니다</div></div>
+          <div class="fg">
+            <label>문의처</label>
+            <input id="f-contact" placeholder="예: 홍길동 매니저 02-000-0000">
+            <div class="hint">이름, 직책, 연락처 등 자유롭게 입력</div>
+          </div>
+          <div class="fg">
+            <label>이미지 (최대 10장)</label>
+            <div class="img-up-area" id="imgUpArea">
+              <div style="font-size:22px;margin-bottom:4px">📎</div>
+              <div style="font-size:12px;color:var(--text3)">클릭해서 이미지 추가 (카드뉴스, 포스터 등)</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px">JPG, PNG · 최대 10장</div>
+              <input type="file" id="imgInput" accept="image/*" multiple style="display:none">
+            </div>
+            <div class="img-prev-grid" id="imgPreview"></div>
+          </div>
+          <div class="form-btns">
+            <button class="btn-g" id="btn-reset">초기화</button>
+            <button class="btn-p" id="btn-save">저장하기</button>
+          </div>
+        </div>
+
+        <!-- 센터 관리 탭 -->
+        <div id="tab-centers" style="display:none">
+          <div class="fg">
+            <label>등록된 센터</label>
+            <div class="hint" style="margin-bottom:10px">색상 원을 클릭하면 색상을 바꿀 수 있어요</div>
+            <div id="ctList"></div>
+          </div>
+          <div class="fg" style="margin-top:1.25rem">
+            <label>새 센터 추가</label>
+            <div class="ct-add-row">
+              <div class="ct-add-color-wrap" title="색상 선택">
+                <div class="ct-add-color-preview" id="ctAddPreview" style="background:#1D9E75"></div>
+                <input type="color" id="newCtColor" value="#1D9E75" oninput="document.getElementById('ctAddPreview').style.background=this.value">
+              </div>
+              <input class="ct-add-input" id="newCtInput" placeholder="예: 서울청년센터 중랑">
+              <button class="ct-add-btn" id="btn-addCt">추가</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 목록 탭 -->
+        <div id="tab-list" style="display:none">
+          <div id="progList"></div>
+        </div>
+
+        <!-- 디자인 탭 -->
+        <div id="tab-design" style="display:none">
+          <div class="dsec">
+            <div class="dsec-title">메인 컬러</div>
+            <div style="font-size:12px;color:var(--text2);margin-bottom:6px">색조</div>
+            <input type="range" class="hue-slider" id="hueSlider" min="0" max="360" value="48">
+            <div style="font-size:12px;color:var(--text2);margin-bottom:6px">밝기</div>
+            <input type="range" class="lit-slider" id="litSlider" min="30" max="90" value="65">
+            <div class="color-result">
+              <div class="color-box" id="colorBox"></div>
+              <input class="color-hex" id="colorHex" placeholder="#FFD84D">
+              <button class="apply-color-btn" id="btn-applyColor">적용</button>
+            </div>
+          </div>
+          <div class="dsec">
+            <div class="dsec-title">글씨체</div>
+            <div class="cdd-wrap" id="fontCdd">
+              <div class="cdd-trigger" id="fontCddTrigger">
+                <span class="cdd-trigger-label" id="fontCddLabel">Noto Sans KR — 기본 고딕</span>
+                <span class="cdd-trigger-sample" id="fontCddSample" style="font-family:'Noto Sans KR',sans-serif">가나다라</span>
+                <span class="cdd-arrow">▼</span>
+              </div>
+              <div class="cdd-list" id="fontCddList"></div>
+            </div>
+          </div>
+          <div class="dsec">
+            <div class="dsec-title">배경 스타일</div>
+            <div class="cdd-wrap" id="bgCdd">
+              <div class="cdd-trigger" id="bgCddTrigger">
+                <span class="cdd-trigger-label" id="bgCddLabel">크림 화이트</span>
+                <div class="cdd-trigger-swatch" id="bgCddSwatch" style="background:#FAF9F6"></div>
+                <span class="cdd-arrow">▼</span>
+              </div>
+              <div class="cdd-list" id="bgCddList"></div>
+            </div>
+          </div>
+          <div class="dsec">
+            <div class="dsec-title">헤더 배경 이미지</div>
+            <div id="hdrImgPreviewWrap" style="display:none;margin-bottom:10px;position:relative;border-radius:var(--r-md);overflow:hidden;aspect-ratio:16/7;background:var(--bg2)">
+              <img id="hdrImgPreview" src="" alt="배경 미리보기" style="width:100%;height:100%;object-fit:cover;display:block">
+              <button id="hdrImgRemove" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:20px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:var(--font-body)">✕ 제거</button>
+            </div>
+            <div id="hdrImgUpArea" style="border:2px dashed var(--bg3);border-radius:var(--r-md);padding:1rem;text-align:center;cursor:pointer;background:var(--bg)">
+              <div style="font-size:20px;margin-bottom:4px">🖼</div>
+              <div style="font-size:12px;color:var(--text3)">클릭해서 배경 이미지 업로드</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px">JPG, PNG · 권장 비율 3:1 이상</div>
+              <input type="file" id="hdrImgInput" accept="image/*" style="display:none">
+            </div>
+            <div style="margin-top:10px" id="hdrOverlayWrap">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                <label style="font-size:12px;color:var(--text2);font-weight:500">컬러 오버레이 투명도</label>
+                <span id="hdrOverlayVal" style="font-size:12px;color:var(--text3)">60%</span>
+              </div>
+              <input type="range" id="hdrOverlaySlider" min="0" max="100" value="60" style="-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:var(--bg3);outline:none;cursor:pointer">
+            </div>
+          </div>
+          <div class="dsec">
+            <div class="dsec-title">헤더 텍스트</div>
+            <div class="fg"><label>메인 제목</label><input id="d-title" placeholder="가족돌봄청년 연계 프로그램"></div>
+            <div class="fg"><label>부제목</label><input id="d-sub" placeholder="모집일정을 한눈에 확인하세요"></div>
+            <div class="fg"><label>배지</label><input id="d-badge" placeholder="서울 청년센터 6개소 × 가족돌봄청년지원팀"></div>
+          </div>
+          <div class="dsec">
+            <div class="dsec-title">기타</div>
+            <div class="tog-row">
+              <div><div style="font-size:13px">어두운 모드</div><div class="hint">배경을 어둡게</div></div>
+              <label class="tog-sw"><input type="checkbox" id="darkTog"><span class="sl"></span></label>
+            </div>
+          </div>
+              <div class="dsec">
+                <div class="dsec-title">관리자 비밀번호 변경</div>
+                <div class="fg"><label>현재 비밀번호</label><input type="password" id="pw-cur" placeholder="현재 비밀번호"></div>
+                <div class="fg"><label>새 비밀번호</label><input type="password" id="pw-new" placeholder="새 비밀번호 (4자 이상)"></div>
+                <div class="fg"><label>새 비밀번호 확인</label><input type="password" id="pw-new2" placeholder="다시 입력"></div>
+                <button class="btn-p" id="btn-changePw" style="width:100%">비밀번호 변경</button>
+              </div>
+          <button class="btn-p" id="btn-saveDesign" style="width:100%">디자인 저장</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 미리보기 -->
+    <div class="preview-wrap">
+      <div class="prev-lbl">모바일 미리보기</div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="pv-hdr" id="pvHdr" style="position:relative">
+            <img id="pvHdrBgImg" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0">
+            <div id="pvHdrOverlay" style="position:absolute;inset:0;z-index:1;pointer-events:none"></div>
+            <div style="position:relative;z-index:2">
+            <div class="pv-badge" id="pvBadge">서울 청년센터 6개소</div>
+            <div class="pv-title" id="pvTitle">가족돌봄청년<br>연계 프로그램</div>
+            <div class="pv-sub" id="pvSub">모집일정을 달력에서 확인하세요</div>
+            </div>
+          </div>
+          <div class="pv-body" id="pvBody">
+            <div class="pv-cal">
+              <div class="pv-nav">
+                <span>‹</span><span id="pvMonthLbl"></span><span>›</span>
+              </div>
+              <div class="pv-legend" id="pvLegend"></div>
+              <div class="pv-dow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
+              <div class="pv-grid" id="pvGrid"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const FONTS=[
+  {id:'noto-sans',   label:'Noto Sans KR — 기본 고딕',    css:"'Noto Sans KR',sans-serif"},
+  {id:'noto-serif',  label:'Noto Serif KR — 명조체',       css:"'Noto Serif KR',serif"},
+  {id:'gowun',       label:'고운돋움 — 부드러운 고딕',      css:"'Gowun Dodum',sans-serif"},
+  {id:'jua',         label:'주아 — 귀여운 손글씨 느낌',     css:"'Jua',sans-serif"},
+  {id:'gaegu',       label:'개구 — 손글씨 캐주얼',          css:"'Gaegu',cursive"},
+  {id:'blackhan',    label:'Black Han Sans — 강렬한 굵기',  css:"'Black Han Sans',sans-serif"},
+  {id:'poorstory',   label:'Poor Story — 동글동글 귀여운',  css:"'Poor Story',cursive"},
+  {id:'sunflower',   label:'Sunflower — 가볍고 경쾌한',     css:"'Sunflower',sans-serif"},
+  {id:'cute-font',   label:'Cute Font — 깜찍한 손글씨',     css:"'Cute Font',cursive"},
+  {id:'dokdo',       label:'Dokdo — 자유로운 붓 느낌',      css:"'Dokdo',cursive"},
+  {id:'eastseadokdo',label:'East Sea Dokdo — 담백한 붓글씨',css:"'East Sea Dokdo',cursive"},
+  {id:'nanum-pen',   label:'나눔손글씨 펜 — 부드러운 필기', css:"'Nanum Pen Script',cursive"},
+  {id:'nanum-gothic',label:'나눔고딕 — 깔끔한 본문용',      css:"'Nanum Gothic',sans-serif"},
+  {id:'nanum-myeongjo',label:'나눔명조 — 단정한 명조',      css:"'Nanum Myeongjo',serif"},
+  {id:'hi-melody',   label:'Hi Melody — 밝고 발랄한',       css:"'Hi Melody',cursive"},
+];
+const BG_OPTS=[
+  {label:'크림 화이트',   bg:'#FAF9F6',bg2:'#F2F0EB',bg3:'#E8E5DE'},
+  {label:'순백',          bg:'#FFFFFF',bg2:'#F5F5F5',bg3:'#E5E5E5'},
+  {label:'웜 그레이',     bg:'#F7F5F2',bg2:'#EDEAE5',bg3:'#DDD9D2'},
+  {label:'라벤더',        bg:'#F8F7FF',bg2:'#EEEDFE',bg3:'#CECBF6'},
+  {label:'스카이 블루',   bg:'#F0F7FF',bg2:'#DCEEFB',bg3:'#B5D4F4'},
+  {label:'민트 그린',     bg:'#F2FAF6',bg2:'#E1F5EE',bg3:'#9FE1CB'},
+  {label:'세이지 그린',   bg:'#F4F7F2',bg2:'#E4EDE0',bg3:'#C4D9BC'},
+  {label:'피치',          bg:'#FFF8F5',bg2:'#FAECE7',bg3:'#F5C4B3'},
+  {label:'로즈',          bg:'#FFF5F7',bg2:'#FBEAF0',bg3:'#F4C0D1'},
+  {label:'버터 옐로우',   bg:'#FFFDF0',bg2:'#FFF7D6',bg3:'#FFE87A'},
+  {label:'샌드 베이지',   bg:'#FDFAF4',bg2:'#F5EDDB',bg3:'#E8D9B8'},
+  {label:'딥 네이비',     bg:'#0F1117',bg2:'#1A1D28',bg3:'#252A3A',dark:true},
+  {label:'다크 슬레이트', bg:'#1E2028',bg2:'#2A2D38',bg3:'#3A3E4E',dark:true},
+  {label:'다크 그린',     bg:'#0D1A12',bg2:'#152A1D',bg3:'#1E3D29',dark:true},
+  {label:'다크 퍼플',     bg:'#130D1F',bg2:'#1E1530',bg3:'#2D2048',dark:true},
+];
+const STATUS_STYLE={'모집중':{bg:'#E1F5EE',color:'#085041'},'모집예정':{bg:'#FAEEDA',color:'#633806'},'마감':{bg:'#F1EFE8',color:'#5F5E5A'}};
+const DEFAULT_CENTERS=[
+  {name:'서울청년센터 서대문',color:'#1D9E75'},
+  {name:'서울청년센터 강동',color:'#7F77DD'},
+  {name:'서울청년센터 마포',color:'#D85A30'},
+  {name:'서울청년센터 은평',color:'#378ADD'},
+  {name:'서울청년센터 성동',color:'#D4537E'},
+  {name:'서울청년센터 도봉',color:'#BA7517'},
+];
+
+// 센터 색상에서 연한 배경색 생성
+function colorToLight(hex,alpha=0.15){
+  const r=parseInt(hex.slice(1,3),16);
+  const g=parseInt(hex.slice(3,5),16);
+  const b=parseInt(hex.slice(5,7),16);
+  return`rgba(${r},${g},${b},${alpha})`;
+}
+function colorToDark(hex){
+  const r=parseInt(hex.slice(1,3),16);
+  const g=parseInt(hex.slice(3,5),16);
+  const b=parseInt(hex.slice(5,7),16);
+  // 어두운 버전
+  return`rgb(${Math.round(r*.45)},${Math.round(g*.45)},${Math.round(b*.45)})`;
+}
+
+let programs=[], design={}, centers=[], editImgs=[];
+const today=new Date();
+let vYear=today.getFullYear(), vMonth=today.getMonth();
+let hue=48, lit=65;
+
+// 로드/저장
+function load(){
+  try{programs=JSON.parse(localStorage.getItem('fcy_p')||'[]');}catch(e){programs=[];}
+  try{design=JSON.parse(localStorage.getItem('fcy_d')||'{}');}catch(e){design={};}
+  try{
+    const c=localStorage.getItem('fcy_c');
+    if(c){
+      const parsed=JSON.parse(c);
+      // 기존 문자열 배열 → 객체 배열로 마이그레이션
+      if(parsed.length>0 && typeof parsed[0]==='string'){
+        const colors=['#1D9E75','#7F77DD','#D85A30','#378ADD','#D4537E','#BA7517'];
+        centers=parsed.map((name,i)=>({name,color:colors[i%colors.length]}));
+        localStorage.setItem('fcy_c',JSON.stringify(centers));
+      } else {
+        centers=parsed;
+      }
+    } else {
+      centers=JSON.parse(JSON.stringify(DEFAULT_CENTERS));
+    }
+  }catch(e){centers=JSON.parse(JSON.stringify(DEFAULT_CENTERS));}
+}
+function saveP(){localStorage.setItem('fcy_p',JSON.stringify(programs));if(window.fbSave)window.fbSave('programs',programs);}
+function saveD(){localStorage.setItem('fcy_d',JSON.stringify(design));if(window.fbSave)window.fbSave('design',design);}
+function saveC(){localStorage.setItem('fcy_c',JSON.stringify(centers));if(window.fbSave)window.fbSave('centers',centers);}
+
+// 센터 스타일 헬퍼
+function getCenterObj(name){return centers.find(c=>c.name===name)||{name,color:'#888780'};}
+function getCenterStyle(name){
+  const c=getCenterObj(name);
+  return{
+    bg:colorToLight(c.color,0.18),
+    color:colorToDark(c.color),
+    chip:colorToLight(c.color,0.55),
+    chipText:colorToDark(c.color),
+    raw:c.color,
+  };
+}
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+// 색상 유틸
+function hslToHex(h,s,l){s/=100;l/=100;const a=s*Math.min(l,1-l);const f=n=>{const k=(n+h/30)%12;const c=l-a*Math.max(-1,Math.min(k-3,9-k,1));return Math.round(255*c).toString(16).padStart(2,'0');};return`#${f(0)}${f(8)}${f(4)}`;}
+function hexToHsl(hex){let r=0,g=0,b=0;if(hex.length===7){r=parseInt(hex.slice(1,3),16)/255;g=parseInt(hex.slice(3,5),16)/255;b=parseInt(hex.slice(5,7),16)/255;}const max=Math.max(r,g,b),min=Math.min(r,g,b);let h=0,s=0,l=(max+min)/2;if(max!==min){const d=max-min;s=l>.5?d/(2-max-min):d/(max+min);switch(max){case r:h=((g-b)/d+(g<b?6:0))/6;break;case g:h=((b-r)/d+2)/6;break;case b:h=((r-g)/d+4)/6;break;}}return[Math.round(h*360),Math.round(s*100),Math.round(l*100)];}
+function updateSliders(){
+  const hex=hslToHex(hue,75,lit);
+  document.getElementById('colorHex').value=hex;
+  document.getElementById('colorBox').style.background=hex;
+  document.getElementById('litSlider').style.background=`linear-gradient(to right,${hslToHex(hue,75,20)},${hslToHex(hue,75,50)},${hslToHex(hue,75,80)},#fff)`;
+}
+
+// 디자인 적용
+function applyDesign(){
+  const r=document.documentElement.style;
+  if(design.primary)r.setProperty('--primary',design.primary);
+  if(design.bg){r.setProperty('--bg',design.bg);r.setProperty('--bg2',design.bg2||'#F2F0EB');r.setProperty('--bg3',design.bg3||'#E8E5DE');}
+  if(design.font)r.setProperty('--font-display',design.font);
+  if(design.dark)applyDark(true);
+  if(design.title)document.getElementById('hdrTitle').innerHTML=design.title;
+  if(design.sub)document.getElementById('hdrSub').textContent=design.sub;
+  if(design.badge)document.getElementById('hdrBadge').textContent=design.badge;
+  applyHdrBgImg();
+}
+function applyDark(on){
+  const r=document.documentElement.style;
+  if(on){r.setProperty('--bg','#1A1A2E');r.setProperty('--bg2','#222233');r.setProperty('--bg3','#333350');r.setProperty('--text1','#F0F0F0');r.setProperty('--text2','#A8A8C0');r.setProperty('--text3','#6B6B85');r.setProperty('--white','#2A2A3E');}
+  else{r.setProperty('--bg',design.bg||'#FAF9F6');r.setProperty('--bg2',design.bg2||'#F2F0EB');r.setProperty('--bg3',design.bg3||'#E8E5DE');r.setProperty('--text1','#1A1A1A');r.setProperty('--text2','#6B6760');r.setProperty('--text3','#A8A49D');r.setProperty('--white','#FFFFFF');}
+  design.dark=on;
+}
+
+function applyHdrBgImg(){
+  const img=document.getElementById('siteHdrBgImg');
+  const overlay=document.getElementById('siteHdrOverlay');
+  const header=document.getElementById('siteHeader');
+  if(!img||!overlay||!header)return;
+  if(design.hdrBgImg){
+    img.src=design.hdrBgImg;
+    img.style.display='block';
+    const alpha=design.hdrOverlay!==undefined?design.hdrOverlay:60;
+    const primary=design.primary||'#FFD84D';
+    overlay.style.background=hexToRgba(primary, alpha/100);
+    header.style.background='transparent';
+  } else {
+    img.src='';img.style.display='none';
+    overlay.style.background='transparent';
+    header.style.background='var(--primary)';
+  }
+}
+function hexToRgba(hex,alpha){
+  const r=parseInt(hex.slice(1,3),16);
+  const g=parseInt(hex.slice(3,5),16);
+  const b=parseInt(hex.slice(5,7),16);
+  return`rgba(${r},${g},${b},${alpha})`;
+}
+
+// 달력 이벤트 (실시일 기준만 표시)
+let activeFilter='전체';
+
+function getEvs(ds){
+  const ev=[];
+  programs.forEach(p=>{
+    if(activeFilter!=='전체' && p.center!==activeFilter) return;
+    if((p.progDates||[]).includes(ds))ev.push({p,t:'prog'});
+  });
+  return ev;
+}
+
+// 필터 탭 렌더링
+function renderFilterTabs(){
+  const tabs=[{name:'전체',color:'#1A1A1A'},...centers.map(c=>({name:c.name,color:c.color}))];
+  document.getElementById('filterTabs').innerHTML=tabs.map(t=>{
+    const isActive=activeFilter===t.name;
+    const shortName=t.name==='전체'?'전체':t.name.replace('서울청년센터 ','');
+    const style=isActive?`background:${t.color};color:#fff`:`color:var(--text3)`;
+    const dot=t.name==='전체'?'':`<span class="ftab-dot" style="background:${isActive?'rgba(255,255,255,.8)':t.color}"></span>`;
+    return`<button class="filter-tab${isActive?' active':''}" style="${style}" data-center="${t.name}">${dot}${shortName}</button>`;
+  }).join('');
+  document.querySelectorAll('.filter-tab').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      activeFilter=this.dataset.center;
+      renderFilterTabs();
+      renderCal();
+    });
+  });
+}
+
+// 달력 렌더링
+function renderCal(){
+  const months=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  document.getElementById('monthLbl').textContent=`${vYear}년 ${months[vMonth]}`;
+  const fd=new Date(vYear,vMonth,1).getDay();
+  const dim=new Date(vYear,vMonth+1,0).getDate();
+  const dip=new Date(vYear,vMonth,0).getDate();
+  const tds=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  let cells=[];
+  for(let i=fd-1;i>=0;i--)cells.push({d:dip-i,cur:false});
+  for(let i=1;i<=dim;i++)cells.push({d:i,cur:true});
+  while(cells.length<42)cells.push({d:cells.length-fd-dim+1,cur:false});
+  if(!programs.length){
+    document.getElementById('calGrid').innerHTML=`<div class="empty-state">아직 등록된 프로그램이 없어요.<br><strong>⚙ 관리</strong> 버튼을 눌러 추가해보세요.</div>`;
+    return;
+  }
+  document.getElementById('calGrid').innerHTML=cells.map((cell,idx)=>{
+    const ds=`${vYear}-${String(vMonth+1).padStart(2,'0')}-${String(cell.d).padStart(2,'0')}`;
+    const isT=cell.cur&&ds===tds;
+    const d=idx%7;
+    const evs=cell.cur?getEvs(ds):[];
+    const show=evs.slice(0,2);const extra=evs.length-2;
+    const chips=show.map(ev=>{
+      const cs=getCenterStyle(ev.p.center);
+      return`<button class="prog-chip" style="background:${cs.chip};color:${cs.chipText}" data-id="${ev.p.id}">${ev.p.title}</button>`;
+    }).join('');
+    const more=extra>0?`<span class="more-lbl">+${extra}</span>`:'';
+    return`<div class="day-cell${cell.cur?' in-month':' other-month'}${isT?' today':''}${d===0?' sun':d===6?' sat':''}"><div class="day-num-wrap"><span class="dn">${cell.d}</span></div>${chips}${more}</div>`;
+  }).join('');
+  document.getElementById('calGrid').querySelectorAll('.prog-chip').forEach(btn=>{
+    btn.addEventListener('click',function(){openDetail(Number(this.dataset.id));});
+  });
+}
+
+// 상세 시트
+function openDetail(id){
+  const p=programs.find(x=>x.id===id);if(!p)return;
+  const cs=getCenterStyle(p.center);
+  const st=STATUS_STYLE[p.status]||STATUS_STYLE['모집중'];
+  const imgs=p.images||[];
+  const imgHtml=imgs.length?`<div class="img-swiper" id="imgSw">${imgs.map((s,i)=>`<div class="img-slide"><img src="${s}" alt="이미지${i+1}"></div>`).join('')}</div>${imgs.length>1?`<div class="img-dots">${imgs.map((_,i)=>`<div class="img-dot${i===0?' active':''}" data-dot="${i}"></div>`).join('')}</div>`:''}`:'';
+  const typeLabel=p.progType?`<span class="type-badge" style="background:${p.progType==='연속'?'#EEEDFE':'#FAEEDA'};color:${p.progType==='연속'?'#3C3489':'#633806'}">${p.progType}</span>`:'';
+  const applyHtml=p.link&&p.status!=='마감'?`<a class="apply-btn-sh" href="${p.link}" target="_blank" rel="noopener">신청하기</a>`:p.status==='마감'?`<div class="closed-btn-sh">모집이 마감되었습니다</div>`:'';
+  document.getElementById('sheetContent').innerHTML=`
+    <div class="sh-head">
+      <span class="sh-center-badge" style="background:${cs.bg};color:${cs.color}">${p.center}</span>
+      <div class="sh-title">${p.title}${typeLabel}</div>
+    </div>
+    <div class="sh-body">
+      ${imgHtml}
+      <div class="info-row"><span class="info-icon">◎</span><span class="info-label">모집 상태</span><span class="info-val"><span class="status-pill" style="background:${st.bg};color:${st.color}">${p.status}</span>${p.progCategory?`<span class="type-badge" style="background:var(--bg2);color:var(--text2);margin-left:6px">${p.progCategory}</span>`:''}</span></div>
+      <div class="info-row"><span class="info-icon">📅</span><span class="info-label">모집 기간</span><span class="info-val">${p.recruitStart} ~ ${p.recruitEnd}</span></div>
+      ${p.schedule?`<div class="info-row"><span class="info-icon">🕐</span><span class="info-label">프로그램 일시</span><span class="info-val">${p.schedule}</span></div>`:''}
+      ${p.location?`<div class="info-row"><span class="info-icon">📍</span><span class="info-label">장소</span><span class="info-val">${p.location}</span></div>`:''}
+      ${p.capacity?`<div class="info-row"><span class="info-icon">👥</span><span class="info-label">모집 인원</span><span class="info-val">${p.capacity}</span></div>`:''}
+      ${p.desc?`<div class="info-row"><span class="info-icon">📋</span><span class="info-label">소개</span><span class="info-val">${p.desc}</span></div>`:''}
+      ${p.contact?`<div class="info-row"><span class="info-icon">📞</span><span class="info-label">문의처</span><span class="info-val">${p.contact}</span></div>`:''}
+      ${applyHtml}
+    </div>
+    `;
+  document.getElementById('sheetOv').classList.add('open');
+  const sw=document.getElementById('imgSw');
+  if(sw)sw.addEventListener('scroll',function(){
+    const idx=Math.round(this.scrollLeft/this.offsetWidth);
+    document.querySelectorAll('.img-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+  });
+
+}
+function closeDetail(){document.getElementById('sheetOv').classList.remove('open');}
+
+// 페이지 전환
+
+// ── 비밀번호
+const DEFAULT_PW = '1234';
+function getAdminPw(){ return localStorage.getItem('fcy_pw') || DEFAULT_PW; }
+
+function openPwModal(){
+  document.getElementById('pw-input').value='';
+  document.getElementById('pw-error').textContent='';
+  document.getElementById('pw-input').classList.remove('error');
+  document.getElementById('pw-modal-wrap').classList.add('open');
+  setTimeout(()=>document.getElementById('pw-input').focus(),100);
+}
+function closePwModal(){
+  document.getElementById('pw-modal-wrap').classList.remove('open');
+}
+function checkPw(){
+  const val=document.getElementById('pw-input').value;
+  if(val===getAdminPw()){
+    closePwModal();
+    goAdmin();
+  } else {
+    document.getElementById('pw-error').textContent='비밀번호가 틀렸습니다';
+    document.getElementById('pw-input').classList.add('error');
+    document.getElementById('pw-input').value='';
+    setTimeout(()=>document.getElementById('pw-input').classList.remove('error'),400);
+  }
+}
+
+function goAdmin(){
+  document.getElementById('page-public').style.display='none';
+  document.getElementById('btn-manage').style.display='none';
+  document.getElementById('page-admin').style.display='block';
+  renderCtSelect();renderCtList();renderProgList();buildFontOpts();buildBgOpts();initDesignInputs();livePreview();
+}
+function goPublic(){
+  document.getElementById('page-admin').style.display='none';
+  document.getElementById('page-public').style.display='block';
+  document.getElementById('btn-manage').style.display='flex';
+  renderFilterTabs();renderCal();
+}
+
+// 탭
+function switchTab(name){
+  ['form','centers','list','design'].forEach(t=>{
+    document.getElementById(`tab-${t}`).style.display=t===name?'block':'none';
+    document.querySelector(`.ap-tab[data-tab="${t}"]`).classList.toggle('on',t===name);
+  });
+  if(name==='list')renderProgList();
+  if(name==='centers'){renderCtList();renderCtSelect();}
+  if(name==='design'){buildFontOpts();buildBgOpts();initDesignInputs();}
+}
+
+// 센터 관리
+function renderCtSelect(){
+  document.getElementById('f-center').innerHTML=centers.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
+}
+function renderCtList(){
+  document.getElementById('ctList').innerHTML=centers.map((c,i)=>
+    `<div class="ct-item">
+      <div class="ct-color-swatch" style="background:${c.color}" title="색상 변경">
+        <input type="color" value="${c.color}" data-ci="${i}">
+      </div>
+      <span class="ct-name">${c.name}</span>
+      <button class="ct-del" data-ci="${i}" title="삭제">×</button>
+    </div>`
+  ).join('');
+  document.querySelectorAll('.ct-color-swatch input[type=color]').forEach(el=>{
+    el.addEventListener('input',function(){
+      const i=Number(this.dataset.ci);
+      centers[i].color=this.value;
+      this.closest('.ct-color-swatch').style.background=this.value;
+      saveC();renderFilterTabs();renderCal();livePreview();
+    });
+  });
+  document.querySelectorAll('.ct-del').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      const i=Number(this.dataset.ci);
+      const name=centers[i].name;
+      if(activeFilter===name) activeFilter='전체';
+      centers.splice(i,1);saveC();renderCtList();renderCtSelect();
+      renderFilterTabs();renderCal();livePreview();
+      toast(`'${name}' 삭제됨`);
+    });
+  });
+}
+
+// 이미지
+function handleImgs(files){
+  const rem=10-editImgs.length;
+  if(rem<=0){toast('최대 10장까지 가능해요');return;}
+  Array.from(files).slice(0,rem).forEach(f=>{
+    const r=new FileReader();
+    r.onload=e=>{editImgs.push(e.target.result);renderImgPreview();};
+    r.readAsDataURL(f);
+  });
+}
+function renderImgPreview(){
+  document.getElementById('imgPreview').innerHTML=editImgs.map((src,i)=>
+    `<div class="img-thumb"><img src="${src}" alt=""><button class="img-del" data-ii="${i}">×</button></div>`
+  ).join('');
+  document.querySelectorAll('.img-del').forEach(btn=>{
+    btn.addEventListener('click',function(){editImgs.splice(Number(this.dataset.ii),1);renderImgPreview();});
+  });
+}
+
+// 프로그램 CRUD
+function saveProgram(){
+  const title=document.getElementById('f-title').value.trim();
+  const rs=document.getElementById('f-rstart').value;
+  const re=document.getElementById('f-rend').value;
+  if(!title){toast('프로그램명을 입력해주세요');return;}
+  if(!rs||!re){toast('모집 기간을 입력해주세요');return;}
+  const ptype=document.querySelector('input[name="ptype"]:checked')?.value||'일회성';
+  const progDates=document.getElementById('f-dates').value.split(',').map(d=>d.trim()).filter(d=>/\d{4}-\d{2}-\d{2}/.test(d));
+  const eid=Number(document.getElementById('editId').value);
+  const data={
+    center:document.getElementById('f-center').value,title,
+    recruitStart:rs,recruitEnd:re,progType:ptype,progDates,
+    progCategory:document.getElementById('f-progtype').value,
+    schedule:document.getElementById('f-schedule').value.trim(),
+    location:document.getElementById('f-location').value.trim(),
+    status:document.getElementById('f-status').value,
+    capacity:document.getElementById('f-capacity').value.trim(),
+    desc:document.getElementById('f-desc').value.trim(),
+    link:document.getElementById('f-link').value.trim(),
+    contact:document.getElementById('f-contact').value.trim(),
+    images:editImgs
+  };
+  if(eid){const idx=programs.findIndex(p=>p.id===eid);if(idx>-1){programs[idx]={...programs[idx],...data};toast('✓ 수정됨');}}
+  else{programs.push({id:Date.now(),...data});toast('✓ 추가됨');}
+  saveP();resetForm();renderProgList();renderFilterTabs();renderCal();livePreview();
+}
+function editProgram(id){
+  const p=programs.find(x=>x.id===id);if(!p)return;
+  document.getElementById('editId').value=id;
+  document.getElementById('apTitle').textContent='프로그램 수정';
+  document.getElementById('f-center').value=p.center;
+  document.getElementById('f-title').value=p.title;
+  document.getElementById('f-rstart').value=p.recruitStart;
+  document.getElementById('f-rend').value=p.recruitEnd;
+  document.getElementById('f-dates').value=(p.progDates||[]).join(', ');
+  document.getElementById('f-schedule').value=p.schedule||'';
+  document.getElementById('f-location').value=p.location||'';
+  document.getElementById('f-status').value=p.status||'모집중';
+  document.getElementById('f-capacity').value=p.capacity||'';
+  document.getElementById('f-desc').value=p.desc||'';
+  document.getElementById('f-link').value=p.link||'';
+  document.getElementById('f-contact').value=p.contact||'';
+  document.getElementById('f-progtype').value=p.progCategory||'';
+  const t=p.progType||'일회성';
+  document.querySelectorAll('input[name="ptype"]').forEach(r=>r.checked=r.value===t);
+  editImgs=[...(p.images||[])];renderImgPreview();
+  switchTab('form');
+}
+function deleteProgram(id){
+  programs=programs.filter(p=>p.id!==id);
+  saveP();renderProgList();renderFilterTabs();renderCal();livePreview();toast('삭제됨');
+}
+function resetForm(){
+  document.getElementById('editId').value='';
+  document.getElementById('apTitle').textContent='관리자 페이지';
+  ['f-title','f-rstart','f-rend','f-dates','f-schedule','f-location','f-capacity','f-desc','f-link','f-contact'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-progtype').value='';
+  document.getElementById('f-status').value='모집중';
+  document.querySelectorAll('input[name="ptype"]').forEach(r=>r.checked=r.value==='일회성');
+  if(centers.length)document.getElementById('f-center').value=centers[0].name;
+  editImgs=[];renderImgPreview();
+}
+function renderProgList(){
+  const el=document.getElementById('progList');
+  if(!programs.length){el.innerHTML='<div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">등록된 프로그램 없음</div>';return;}
+  el.innerHTML=programs.map(p=>{
+    const c=getCenterObj(p.center);
+    return`<div class="pli">
+      <div class="pli-dot" style="background:${c.color}"></div>
+      <div class="pli-info">
+        <div class="pli-name">${p.title}</div>
+        <div class="pli-meta">${p.center.replace('서울청년센터 ','')} · ${p.recruitStart}~${p.recruitEnd} · ${p.status}${p.progType?' · '+p.progType:''}</div>
+      </div>
+      <div class="pli-btns">
+        <button class="pli-btn" data-edit="${p.id}">수정</button>
+        <button class="pli-btn del" data-del="${p.id}">삭제</button>
+      </div>
+    </div>`;
+  }).join('');
+  el.querySelectorAll('.pli-btn[data-edit]').forEach(btn=>btn.addEventListener('click',function(){editProgram(Number(this.dataset.edit));switchTab('form');}));
+  el.querySelectorAll('.pli-btn[data-del]').forEach(btn=>btn.addEventListener('click',function(){deleteProgram(Number(this.dataset.del));}));
+}
+
+// 디자인
+// ── 커스텀 드롭다운 공통 유틸
+function cddToggle(triggerId, listId){
+  const trigger=document.getElementById(triggerId);
+  const list=document.getElementById(listId);
+  if(!trigger||!list)return;
+  const isOpen=list.classList.contains('open');
+  // 모든 드롭다운 닫기
+  document.querySelectorAll('.cdd-list').forEach(l=>l.classList.remove('open'));
+  document.querySelectorAll('.cdd-trigger').forEach(t=>t.classList.remove('open'));
+  if(!isOpen){
+    list.classList.add('open');
+    trigger.classList.add('open');
+  }
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.cdd-wrap')){
+    document.querySelectorAll('.cdd-list').forEach(l=>l.classList.remove('open'));
+    document.querySelectorAll('.cdd-trigger').forEach(t=>t.classList.remove('open'));
+  }
+});
+
+function buildFontOpts(){
+  const list=document.getElementById('fontCddList');
+  const trigger=document.getElementById('fontCddTrigger');
+  const curId=design.fontId||'noto-sans';
+  const curFont=FONTS.find(f=>f.id===curId)||FONTS[0];
+  // 트리거 업데이트
+  document.getElementById('fontCddLabel').textContent=curFont.label;
+  document.getElementById('fontCddSample').textContent='가나다라마바';
+  document.getElementById('fontCddSample').style.fontFamily=curFont.css;
+  // 리스트 빌드
+  list.innerHTML=FONTS.map(f=>`
+    <div class="cdd-item${f.id===curId?' selected':''}" data-fid="${f.id}">
+      <span class="cdd-item-sample-font" style="font-family:${f.css}">가나다라마바</span>
+      <span class="cdd-item-label">${f.label}</span>
+    </div>`).join('');
+  list.querySelectorAll('.cdd-item').forEach(item=>{
+    item.addEventListener('click',function(){
+      const f=FONTS.find(x=>x.id===this.dataset.fid);if(!f)return;
+      document.documentElement.style.setProperty('--font-display',f.css);
+      design.fontId=f.id;design.font=f.css;
+      buildFontOpts();livePreview();
+      list.classList.remove('open');trigger.classList.remove('open');
+    });
+  });
+  trigger.onclick=function(e){e.stopPropagation();cddToggle('fontCddTrigger','fontCddList');};
+}
+
+function buildBgOpts(){
+  const list=document.getElementById('bgCddList');
+  const trigger=document.getElementById('bgCddTrigger');
+  const curIdx=design.bgIdx!==undefined?design.bgIdx:0;
+  const curBg=BG_OPTS[curIdx]||BG_OPTS[0];
+  // 트리거 업데이트
+  document.getElementById('bgCddLabel').textContent=curBg.label+(curBg.dark?' (다크)':'');
+  document.getElementById('bgCddSwatch').style.background=`linear-gradient(to right,${curBg.bg},${curBg.bg2},${curBg.bg3})`;
+  // 리스트 빌드
+  list.innerHTML=BG_OPTS.map((o,i)=>`
+    <div class="cdd-item${i===curIdx?' selected':''}" data-bgi="${i}">
+      <div class="cdd-item-swatch-row">
+        <div class="cdd-item-swatch" style="background:${o.bg}" title="배경"></div>
+        <div class="cdd-item-swatch" style="background:${o.bg2}" title="서피스"></div>
+        <div class="cdd-item-swatch" style="background:${o.bg3}" title="보더"></div>
+      </div>
+      <span class="cdd-item-label">${o.label}${o.dark?' 🌙':''}</span>
+    </div>`).join('');
+  list.querySelectorAll('.cdd-item').forEach(item=>{
+    item.addEventListener('click',function(){
+      const i=Number(this.dataset.bgi);const o=BG_OPTS[i];
+      document.documentElement.style.setProperty('--bg',o.bg);
+      document.documentElement.style.setProperty('--bg2',o.bg2);
+      document.documentElement.style.setProperty('--bg3',o.bg3);
+      design.bg=o.bg;design.bg2=o.bg2;design.bg3=o.bg3;design.bgIdx=i;
+      const dark=!!o.dark;
+      document.getElementById('darkTog').checked=dark;
+      applyDark(dark);buildBgOpts();livePreview();
+      list.classList.remove('open');trigger.classList.remove('open');
+    });
+  });
+  trigger.onclick=function(e){e.stopPropagation();cddToggle('bgCddTrigger','bgCddList');};
+}
+
+function updateFontPreview(){}
+function updateBgPreview(){}
+function initDesignInputs(){
+  const primary=design.primary||'#FFD84D';
+  const[h,,l]=hexToHsl(primary);
+  hue=h;lit=l;
+  document.getElementById('hueSlider').value=h;
+  document.getElementById('litSlider').value=l;
+  document.getElementById('d-title').value=design.title||'';
+  document.getElementById('d-sub').value=design.sub||'';
+  document.getElementById('d-badge').value=design.badge||'';
+  document.getElementById('darkTog').checked=!!design.dark;
+  // 헤더 배경 이미지 상태
+  if(design.hdrBgImg){
+    document.getElementById('hdrImgPreview').src=design.hdrBgImg;
+    document.getElementById('hdrImgPreviewWrap').style.display='block';
+    document.getElementById('hdrImgUpArea').style.display='none';
+  } else {
+    document.getElementById('hdrImgPreviewWrap').style.display='none';
+    document.getElementById('hdrImgUpArea').style.display='block';
+  }
+  const ov=design.hdrOverlay!==undefined?design.hdrOverlay:60;
+  document.getElementById('hdrOverlaySlider').value=ov;
+  document.getElementById('hdrOverlayVal').textContent=ov+'%';
+  // 커스텀 드롭다운은 buildFontOpts/buildBgOpts에서 처리
+  updateSliders();
+}
+
+// 미리보기
+function livePreview(){
+  const primary=getComputedStyle(document.documentElement).getPropertyValue('--primary').trim()||'#FFD84D';
+  const bg=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()||'#FAF9F6';
+  const bg2=getComputedStyle(document.documentElement).getPropertyValue('--bg2').trim()||'#F2F0EB';
+  const bg3=getComputedStyle(document.documentElement).getPropertyValue('--bg3').trim()||'#E8E5DE';
+  const font=getComputedStyle(document.documentElement).getPropertyValue('--font-display').trim();
+  // 미리보기 헤더 배경
+  const pvHdr=document.getElementById('pvHdr');
+  const pvBgImg=document.getElementById('pvHdrBgImg');
+  const pvOverlay=document.getElementById('pvHdrOverlay');
+  if(design.hdrBgImg){
+    pvBgImg.src=design.hdrBgImg;pvBgImg.style.display='block';
+    const alpha=(design.hdrOverlay!==undefined?design.hdrOverlay:60)/100;
+    pvOverlay.style.background=hexToRgba(primary,alpha);
+    pvHdr.style.background='transparent';
+  } else {
+    pvBgImg.src='';pvBgImg.style.display='none';
+    pvOverlay.style.background='transparent';
+    pvHdr.style.background=primary;
+  }
+  document.getElementById('pvBadge').textContent=document.getElementById('d-badge').value||design.badge||'서울 청년센터 6개소';
+  const tv=document.getElementById('d-title').value||design.title||'가족돌봄청년\n연계 프로그램';
+  document.getElementById('pvTitle').innerHTML=tv.replace(/\n/,'<br>');
+  document.getElementById('pvTitle').style.fontFamily=font;
+  document.getElementById('pvSub').textContent=document.getElementById('d-sub').value||design.sub||'모집일정을 달력에서 확인하세요';
+  document.getElementById('pvMonthLbl').textContent=`${vYear}년 ${vMonth+1}월`;
+  document.getElementById('pvMonthLbl').style.fontFamily=font;
+  document.getElementById('pvBody').style.background=bg;
+  document.querySelector('.pv-cal').style.borderColor=bg3;
+  document.querySelector('.pv-nav').style.borderBottomColor=bg2;
+  document.querySelector('.phone-screen').style.background=bg;
+  // 미니 범례
+  if(document.getElementById('pvLegend'))document.getElementById('pvLegend').innerHTML=centers.map(c=>
+    `<div class="pv-leg-item"><div class="pv-leg-dot" style="background:${c.color}"></div>${c.name.replace('서울청년센터 ','')}</div>`
+  ).join('');
+  // 미니 달력
+  const fd=new Date(vYear,vMonth,1).getDay();
+  const dim=new Date(vYear,vMonth+1,0).getDate();
+  let cells=[];
+  for(let i=0;i<fd;i++)cells.push(null);
+  for(let i=1;i<=dim;i++)cells.push(i);
+  while(cells.length<35)cells.push(null);
+  const tds=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  document.getElementById('pvGrid').innerHTML=cells.slice(0,35).map(d=>{
+    if(!d)return`<div class="pv-day" style="background:transparent"></div>`;
+    const ds=`${vYear}-${String(vMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isT=ds===tds;
+    const prog=programs.find(p=>(p.progDates||[]).includes(ds));
+    const c=prog?getCenterObj(prog.center):null;
+    const shortTitle=prog?prog.title.slice(0,6)+(prog.title.length>6?'…':''):'';
+    const chip=c?`<div class="pv-chip" style="background:${c.color}">${shortTitle}</div>`:'';
+    return`<div class="pv-day${isT?' pv-today':''}" style="background:${bg2}"><div class="pv-dn">${d}</div>${chip}</div>`;
+  }).join('');
+}
+
+// ── 이벤트 바인딩
+load();
+// 처음 열 때 샘플 데이터 자동 추가
+if(!programs.length){
+  const today2=new Date();
+  const y=today2.getFullYear();
+  const m=String(today2.getMonth()+1).padStart(2,'0');
+  const nextM=String(today2.getMonth()+2>12?1:today2.getMonth()+2).padStart(2,'0');
+  const nextY=today2.getMonth()+2>12?y+1:y;
+  programs=[{
+    id:1,
+    center:'서울청년센터 마포',
+    title:'돌봄청년 마음충전 심리상담',
+    recruitStart:`${y}-${m}-01`,
+    recruitEnd:`${y}-${m}-20`,
+    progType:'연속',
+    progCategory:'상담·치유형',
+    progDates:[
+      `${y}-${m}-10`,
+      `${y}-${m}-17`,
+      `${y}-${m}-24`,
+      `${nextY}-${nextM}-07`,
+    ],
+    schedule:`매주 수요일 14:00~16:00 (총 4회)`,
+    location:'마포 청년센터 3층 상담실',
+    status:'모집중',
+    capacity:'10명',
+    desc:'가족을 돌보느라 지친 마음을 전문 상담사와 함께 돌봅니다. 개인 심리상담과 소그룹 나눔을 병행합니다.',
+    link:'https://example.com/apply',
+    contact:'김민지 매니저 02-123-4567',
+    images:[]
+  }];
+  saveP();
+}
+applyDesign();renderFilterTabs();renderCal();
+
+// Firebase 실시간 연동
+function setupFirebase(){
+  if(!window.fbListen) return;
+  // 프로그램 실시간 감지
+  window.fbListen('programs', function(data){
+    if(data && Array.isArray(data)){
+      programs = data;
+      localStorage.setItem('fcy_p', JSON.stringify(programs));
+      renderFilterTabs(); renderCal();
+      if(document.getElementById('progList')) renderProgList();
+    }
+  });
+  // 센터 실시간 감지
+  window.fbListen('centers', function(data){
+    if(data && Array.isArray(data)){
+      centers = data;
+      localStorage.setItem('fcy_c', JSON.stringify(centers));
+      renderFilterTabs(); renderCal();
+      if(document.getElementById('ctList')) renderCtList();
+      if(document.getElementById('f-center')) renderCtSelect();
+    }
+  });
+  // 디자인 실시간 감지
+  window.fbListen('design', function(data){
+    if(data && typeof data==='object'){
+      design = data;
+      localStorage.setItem('fcy_d', JSON.stringify(design));
+      applyDesign();
+    }
+  });
+}
+
+if(window.fbReady){
+  setupFirebase();
+} else {
+  window.addEventListener('fbReady', setupFirebase);
+}
+
+
+document.getElementById('hdrImgUpArea').addEventListener('click',function(){document.getElementById('hdrImgInput').click();});
+document.getElementById('btn-manage').addEventListener('click',function(){openPwModal();});
+document.getElementById('hdrImgInput').addEventListener('change',function(){
+  const file=this.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    design.hdrBgImg=e.target.result;
+    if(design.hdrOverlay===undefined)design.hdrOverlay=60;
+    // 관리자 미리보기 업데이트
+    document.getElementById('hdrImgPreview').src=e.target.result;
+    document.getElementById('hdrImgPreviewWrap').style.display='block';
+    document.getElementById('hdrImgUpArea').style.display='none';
+    applyHdrBgImg();livePreview();
+  };
+  reader.readAsDataURL(file);
+  this.value='';
+});
+document.getElementById('hdrImgRemove').addEventListener('click',function(){
+  design.hdrBgImg='';
+  document.getElementById('hdrImgPreview').src='';
+  document.getElementById('hdrImgPreviewWrap').style.display='none';
+  document.getElementById('hdrImgUpArea').style.display='block';
+  applyHdrBgImg();livePreview();
+});
+document.getElementById('hdrOverlaySlider').addEventListener('input',function(){
+  design.hdrOverlay=Number(this.value);
+  document.getElementById('hdrOverlayVal').textContent=this.value+'%';
+  applyHdrBgImg();livePreview();
+});
+document.getElementById('btn-back').addEventListener('click',function(){goPublic();});
+document.getElementById('prevMonthBtn').addEventListener('click',function(){vMonth--;if(vMonth<0){vMonth=11;vYear--;}renderCal();});
+document.getElementById('nextMonthBtn').addEventListener('click',function(){vMonth++;if(vMonth>11){vMonth=0;vYear++;}renderCal();});
+document.getElementById('sheetClose').addEventListener('click',closeDetail);
+document.getElementById('sheetOv').addEventListener('click',function(e){if(e.target===this)closeDetail();});
+document.getElementById('btn-reset').addEventListener('click',resetForm);
+document.getElementById('btn-save').addEventListener('click',saveProgram);
+document.getElementById('btn-addCt').addEventListener('click',function(){
+  const v=document.getElementById('newCtInput').value.trim();
+  const col=document.getElementById('newCtColor').value;
+  if(!v){toast('센터명을 입력해주세요');return;}
+  if(centers.find(c=>c.name===v)){toast('이미 있는 센터예요');return;}
+  centers.push({name:v,color:col});saveC();renderCtList();renderCtSelect();
+  document.getElementById('newCtInput').value='';toast('✓ 센터 추가됨');
+  renderFilterTabs();renderCal();livePreview();
+});
+document.getElementById('newCtInput').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('btn-addCt').click();});
+document.getElementById('imgUpArea').addEventListener('click',function(){document.getElementById('imgInput').click();});
+document.getElementById('imgInput').addEventListener('change',function(){handleImgs(this.files);this.value='';});
+document.getElementById('hueSlider').addEventListener('input',function(){hue=Number(this.value);updateSliders();});
+document.getElementById('litSlider').addEventListener('input',function(){lit=Number(this.value);updateSliders();});
+document.getElementById('colorHex').addEventListener('input',function(){
+  if(/^#[0-9A-Fa-f]{6}$/.test(this.value)){const[h,,l]=hexToHsl(this.value);hue=h;lit=l;document.getElementById('hueSlider').value=h;document.getElementById('litSlider').value=l;document.getElementById('colorBox').style.background=this.value;updateSliders();}
+});
+document.getElementById('btn-applyColor').addEventListener('click',function(){
+  const hex=document.getElementById('colorHex').value;
+  if(!/^#[0-9A-Fa-f]{6}$/.test(hex)){toast('올바른 색상 코드를 입력해주세요');return;}
+  document.documentElement.style.setProperty('--primary',hex);
+  design.primary=hex;livePreview();toast('✓ 컬러 적용됨');
+});
+document.getElementById('darkTog').addEventListener('change',function(){applyDark(this.checked);livePreview();});
+document.getElementById('btn-saveDesign').addEventListener('click',function(){
+  design.title=document.getElementById('d-title').value||design.title;
+  design.sub=document.getElementById('d-sub').value||design.sub;
+  design.badge=document.getElementById('d-badge').value||design.badge;
+  if(design.title)document.getElementById('hdrTitle').innerHTML=design.title;
+  if(design.sub)document.getElementById('hdrSub').textContent=design.sub;
+  if(design.badge)document.getElementById('hdrBadge').textContent=design.badge;
+  saveD();toast('✓ 디자인 저장됨');
+});
+document.querySelectorAll('.ap-tab').forEach(tab=>{
+  tab.addEventListener('click',function(){switchTab(this.dataset.tab);});
+});
+['d-title','d-sub','d-badge'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',livePreview);
+});
+
+document.getElementById('pw-confirm').addEventListener('click', checkPw);
+document.getElementById('pw-cancel').addEventListener('click', closePwModal);
+document.getElementById('pw-input').addEventListener('keydown', function(e){ if(e.key==='Enter') checkPw(); });
+document.getElementById('pw-modal-wrap').addEventListener('click', function(e){ if(e.target===this) closePwModal(); });
+document.getElementById('btn-changePw').addEventListener('click', function(){
+  const cur=document.getElementById('pw-cur').value;
+  const nw=document.getElementById('pw-new').value;
+  const nw2=document.getElementById('pw-new2').value;
+  if(cur!==getAdminPw()){toast('현재 비밀번호가 틀렸어요');return;}
+  if(nw.length<4){toast('새 비밀번호는 4자 이상이어야 해요');return;}
+  if(nw!==nw2){toast('새 비밀번호가 일치하지 않아요');return;}
+  localStorage.setItem('fcy_pw', nw);
+  document.getElementById('pw-cur').value='';
+  document.getElementById('pw-new').value='';
+  document.getElementById('pw-new2').value='';
+  toast('✓ 비밀번호가 변경되었습니다');
+});
+
+</script>
+</body>
+</html>
