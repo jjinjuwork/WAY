@@ -652,28 +652,14 @@ let hue=48, lit=65;
 
 // 로드/저장
 function load(){
-  try{programs=JSON.parse(localStorage.getItem('fcy_p')||'[]');}catch(e){programs=[];}
+  // Firebase에서 불러오므로 localStorage는 초기값만 사용
+  programs=[];
   try{design=JSON.parse(localStorage.getItem('fcy_d')||'{}');}catch(e){design={};}
-  try{
-    const c=localStorage.getItem('fcy_c');
-    if(c){
-      const parsed=JSON.parse(c);
-      // 기존 문자열 배열 → 객체 배열로 마이그레이션
-      if(parsed.length>0 && typeof parsed[0]==='string'){
-        const colors=['#1D9E75','#7F77DD','#D85A30','#378ADD','#D4537E','#BA7517'];
-        centers=parsed.map((name,i)=>({name,color:colors[i%colors.length]}));
-        localStorage.setItem('fcy_c',JSON.stringify(centers));
-      } else {
-        centers=parsed;
-      }
-    } else {
-      centers=JSON.parse(JSON.stringify(DEFAULT_CENTERS));
-    }
-  }catch(e){centers=JSON.parse(JSON.stringify(DEFAULT_CENTERS));}
+  centers=JSON.parse(JSON.stringify(DEFAULT_CENTERS));
 }
-function saveP(){localStorage.setItem('fcy_p',JSON.stringify(programs));if(window.fbSave)window.fbSave('programs',programs);}
+function saveP(){if(window.fbSave)window.fbSave('programs',programs);}
 function saveD(){localStorage.setItem('fcy_d',JSON.stringify(design));if(window.fbSave)window.fbSave('design',design);}
-function saveC(){localStorage.setItem('fcy_c',JSON.stringify(centers));if(window.fbSave)window.fbSave('centers',centers);}
+function saveC(){if(window.fbSave)window.fbSave('centers',centers);}
 
 // 센터 스타일 헬퍼
 function getCenterObj(name){return centers.find(c=>c.name===name)||{name,color:'#888780'};}
@@ -1248,7 +1234,6 @@ function setupFirebase(){
       var arr = Array.isArray(data) ? data : Object.values(data);
       if(arr.length > 0){
         programs = arr.filter(function(p){ return p && p.title; });
-        localStorage.setItem('fcy_p', JSON.stringify(programs));
         renderFilterTabs(); renderCal();
         if(document.getElementById('progList')) renderProgList();
       }
@@ -1260,7 +1245,6 @@ function setupFirebase(){
       var arr = Array.isArray(data) ? data : Object.values(data);
       if(arr.length > 0){
         centers = arr.filter(function(c){ return c && c.name; });
-        localStorage.setItem('fcy_c', JSON.stringify(centers));
         renderFilterTabs(); renderCal();
         if(document.getElementById('ctList')) renderCtList();
         if(document.getElementById('f-center')) renderCtSelect();
@@ -1271,7 +1255,6 @@ function setupFirebase(){
   window.fbListen('design', function(data){
     if(data && typeof data==='object'){
       design = data;
-      localStorage.setItem('fcy_d', JSON.stringify(design));
       applyDesign();
     }
   });
