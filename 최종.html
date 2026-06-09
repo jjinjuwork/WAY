@@ -265,31 +265,41 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text1);min-he
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:10px 22px;border-radius:20px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9999;white-space:nowrap}
 .toast.show{opacity:1}
 </style>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyAg84jH87qHxG571bOMU70grxf9vj2P3Bg",
-  authDomain: "youngcarer-8d19c.firebaseapp.com",
-  databaseURL: "https://youngcarer-8d19c-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "youngcarer-8d19c",
-  storageBucket: "youngcarer-8d19c.firebasestorage.app",
-  messagingSenderId: "103338723757",
-  appId: "1:103338723757:web:ef22bc07b95928ea017924"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-window.fbSave = function(key, data){
-  db.ref('way/'+key).set(data);
-};
-window.fbListen = function(key, callback){
-  db.ref('way/'+key).on('value', function(snap){
-    callback(snap.val());
+// Firebase를 순서대로 로드한 뒤 초기화
+(function(){
+  function loadScript(url, cb){
+    var s=document.createElement('script');
+    s.src=url;
+    s.onload=cb;
+    document.head.appendChild(s);
+  }
+  loadScript('https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js', function(){
+    loadScript('https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js', function(){
+      var firebaseConfig = {
+        apiKey: "AIzaSyAg84jH87qHxG571bOMU70grxf9vj2P3Bg",
+        authDomain: "youngcarer-8d19c.firebaseapp.com",
+        databaseURL: "https://youngcarer-8d19c-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "youngcarer-8d19c",
+        storageBucket: "youngcarer-8d19c.firebasestorage.app",
+        messagingSenderId: "103338723757",
+        appId: "1:103338723757:web:ef22bc07b95928ea017924"
+      };
+      firebase.initializeApp(firebaseConfig);
+      var db = firebase.database();
+      window.fbSave = function(key, data){
+        db.ref('way/'+key).set(data);
+      };
+      window.fbListen = function(key, callback){
+        db.ref('way/'+key).on('value', function(snap){
+          callback(snap.val());
+        });
+      };
+      window.fbReady = true;
+      window.dispatchEvent(new Event('fbReady'));
+    });
   });
-};
-window.fbReady = true;
-window.dispatchEvent(new Event('fbReady'));
+})();
 </script>
 </head>
 <body>
@@ -1260,11 +1270,15 @@ function setupFirebase(){
   });
 }
 
-if(window.fbReady){
-  setupFirebase();
-} else {
-  window.addEventListener('fbReady', setupFirebase);
+// Firebase 로드 완료될 때까지 기다렸다가 연동
+function waitForFirebase(){
+  if(window.fbListen){
+    setupFirebase();
+  } else {
+    setTimeout(waitForFirebase, 200);
+  }
 }
+waitForFirebase();
 
 
 document.getElementById('hdrImgUpArea').addEventListener('click',function(){document.getElementById('hdrImgInput').click();});
