@@ -1243,21 +1243,28 @@ function setupFirebase(){
   if(!window.fbListen) return;
   // 프로그램 실시간 감지
   window.fbListen('programs', function(data){
-    if(data && Array.isArray(data)){
-      programs = data;
-      localStorage.setItem('fcy_p', JSON.stringify(programs));
-      renderFilterTabs(); renderCal();
-      if(document.getElementById('progList')) renderProgList();
+    if(data){
+      // Firebase는 배열을 객체로 저장 - 다시 배열로 변환
+      var arr = Array.isArray(data) ? data : Object.values(data);
+      if(arr.length > 0){
+        programs = arr.filter(function(p){ return p && p.title; });
+        localStorage.setItem('fcy_p', JSON.stringify(programs));
+        renderFilterTabs(); renderCal();
+        if(document.getElementById('progList')) renderProgList();
+      }
     }
   });
   // 센터 실시간 감지
   window.fbListen('centers', function(data){
-    if(data && Array.isArray(data)){
-      centers = data;
-      localStorage.setItem('fcy_c', JSON.stringify(centers));
-      renderFilterTabs(); renderCal();
-      if(document.getElementById('ctList')) renderCtList();
-      if(document.getElementById('f-center')) renderCtSelect();
+    if(data){
+      var arr = Array.isArray(data) ? data : Object.values(data);
+      if(arr.length > 0){
+        centers = arr.filter(function(c){ return c && c.name; });
+        localStorage.setItem('fcy_c', JSON.stringify(centers));
+        renderFilterTabs(); renderCal();
+        if(document.getElementById('ctList')) renderCtList();
+        if(document.getElementById('f-center')) renderCtSelect();
+      }
     }
   });
   // 디자인 실시간 감지
